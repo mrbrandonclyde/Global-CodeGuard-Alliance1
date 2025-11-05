@@ -1,0 +1,109 @@
+# 🌍 Global CodeGuard Alliance — Free If You Win Edition
+
+## ⚖️ Overview
+**Mission:** Defend innovators, coders, and creators against IP theft by major tech corporations — for free, unless they win.
+
+**Tagline:** "Justice first, payment second."
+
+**Motto:** *Free if you win.*
+
+**Structure:** Global nonprofit network + open‑source legal engine built on ClydeOS, MetaFOX, and Orbital Bank.
+
+---
+
+## 🧭 1. Core Framework
+| Layer | Function |
+|--------|-----------|
+| **Global Council** | Oversees governance, ethics, and funding. |
+| **Creator Defense Network** | Connects members to vetted lawyers & AI legal assistants. |
+| **Legal Tech Stack** | ClydeOS Kernel + MetaFOX NFT + Supabase schema + Orbital Bank escrow. |
+| **Victory Fund** | Covers legal costs; replenished by victory fees (5‑10 %). |
+
+---
+
+## 💡 2. Membership Model — “Free if You Win”
+| Tier | Cost | Benefits |
+|------|------|-----------|
+| **Open Member** | Free | Access education, news, training. |
+| **Defender Member** | Free until victory | Case matching, legal AI tools. |
+| **Victory Partner** | 5–10 % of recovered amount | Supports next cases. |
+| **Guardian Patron** | Donation | Funds global defense pool. |
+
+All members mint a **MetaFOX NFT Certificate of Membership**, linked to the Alliance ledger.
+
+---
+
+## 🔧 3. GitHub Repository Structure
+```
+github.com/GlobalCodeGuardAlliance/
+├── README.md                     # Mission + instructions
+├── /charter/
+│   ├── founding-charter.md       # Global Club constitution
+│   ├── ethics-code.md            # Ethical oversight charter
+├── /legal/
+│   ├── free-if-you-win-contract.md
+│   ├── case-intake-template.md
+│   ├── victory-fee-policy.md
+├── /smart-contracts/
+│   ├── victoryFund.sol           # Solidity contract for fund escrow
+│   ├── nftCertificate.sol        # MetaFOX‑compatible NFT membership
+├── /supabase/
+│   ├── schema.sql                # Members, cases, fund, NFTs
+│   ├── triggers.sql              # Auto‑update fund & victory ledger
+├── /automation/
+│   ├── payout-workflow.yml       # n8n or GitHub Actions automation
+│   ├── ledger-hash-generator.py  # SHA‑3‑512 & on‑chain notarization
+├── /governance/
+│   ├── council-voting.yaml       # DAO‑style vote definitions
+│   ├── transparency-report.md
+```
+
+---
+
+## 🪙 4. Technology Stack
+- **Frontend:** Next.js + Tailwind + Supabase Auth.
+- **Backend:** FastAPI / Node.js for case intake & fund logic.
+- **Ledger:** Orbital Bank escrow → ClydeOS Vault → MetaFOX NFT anchoring.
+- **Automation:** n8n for fund routing, membership updates, and daily reporting.
+
+---
+
+## 🌐 5. Global Operations
+| Region | Hub City | Legal Partner |
+|---------|-----------|----------------|
+| North America | Star, Idaho | CodeGuard Legal Alliance HQ |
+| Europe | London | ClydeOS EU Legal Node |
+| Asia-Pacific | Tokyo | Infinity Defense Counsel |
+| Africa | Nairobi | Creator Justice Center |
+| Latin America | São Paulo | LegalTech Brasil |
+
+---
+
+## 🔐 6. Transparency Protocols
+- **Public Fund Ledger:** All inflows/outflows visible on ClydeOS dashboard.
+- **Immutable Case Records:** Every case hashed (SHA‑3‑512) and logged on MetaFOX.
+- **Quarterly Global Reports:** Automatically generated + NFT‑anchored PDF.
+
+---
+
+## 🧠 7. Governance Charter (Excerpt)
+> We unite as one alliance — technologists, lawyers, and creators — to ensure no innovator fights alone. Every victory fuels the next defense. Every truth is recorded. Every creation is protected.
+
+---
+
+## 🚀 8. Launch Checklist
+1. [ ] Register GlobalCodeGuardAlliance GitHub org.
+2. [ ] Deploy Supabase + ClydeOS integration.
+3. [ ] Mint founding NFTs (100 Founding Members).
+4. [ ] Launch `www.codeguardalliance.org` portal.
+5. [ ] Initiate first 3 defense cases under “Free if You Win.”
+6. [ ] Publish Global Victory Report (Q1 2026).
+
+---
+
+## 📜 License
+MIT License + Creator Justice Addendum (requires attribution & transparency).
+
+---
+
+**Created by:** Brandon R. Clyde — Founder & Chief Architect, ClydeOS  ♾️
