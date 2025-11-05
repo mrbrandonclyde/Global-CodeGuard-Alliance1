@@ -1,0 +1,149 @@
+# 💎 Smart Contracts — Global CodeGuard Alliance (Free If You Win Edition)
+
+## 🧠 Overview
+This contract suite governs the **Victory Fund**, **membership NFTs**, and **case rewards** for the Global CodeGuard Alliance. It is deployed on Ethereum-compatible chains (Base, Polygon, or any EVM chain).
+
+---
+
+## ⚖️ 1. Victory Fund Contract — `VictoryFund.sol`
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
+/**
+ * @title VictoryFund
+ * @dev Manages donations, case funding, and victory-based payouts.
+ */
+contract VictoryFund is Ownable, ReentrancyGuard {
+    struct Case {
+        uint256 id;
+        address payable member;
+        uint256 targetAmount;
+        uint256 fundedAmount;
+        bool active;
+        bool won;
+    }
+
+    mapping(uint256 => Case) public cases;
+    uint256 public caseCounter;
+    uint256 public totalFunds;
+
+    event CaseCreated(uint256 indexed id, address member, uint256 targetAmount);
+    event CaseFunded(uint256 indexed id, uint256 amount, address donor);
+    event VictoryPaid(uint256 indexed id, uint256 payoutAmount);
+
+    constructor() {}
+
+    // Create a new case for a member
+    function createCase(address payable _member, uint256 _targetAmount) external onlyOwner {
+        caseCounter++;
+        cases[caseCounter] = Case(caseCounter, _member, _targetAmount, 0, true, false);
+        emit CaseCreated(caseCounter, _member, _targetAmount);
+    }
+
+    // Fund a case
+    function fundCase(uint256 _caseId) external payable nonReentrant {
+        Case storage c = cases[_caseId];
+        require(c.active, "Case inactive");
+        c.fundedAmount += msg.value;
+        totalFunds += msg.value;
+        emit CaseFunded(_caseId, msg.value, msg.sender);
+    }
+
+    // Pay victory reward (triggered by Alliance Council)
+    function payVictory(uint256 _caseId, uint256 _amount) external onlyOwner nonReentrant {
+        Case storage c = cases[_caseId];
+        require(c.active && !c.won, "Already processed");
+        require(address(this).balance >= _amount, "Insufficient funds");
+        c.won = true;
+        c.active = false;
+        c.member.transfer(_amount);
+        emit VictoryPaid(_caseId, _amount);
+    }
+
+    // Withdraw operational funds
+    function withdraw(address payable _to, uint256 _amount) external onlyOwner {
+        require(address(this).balance >= _amount, "Not enough balance");
+        _to.transfer(_amount);
+    }
+
+    receive() external payable {
+        totalFunds += msg.value;
+    }
+}
+```
+
+---
+
+## 🪙 2. Membership NFT Contract — `AllianceNFT.sol`
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+/**
+ * @title AllianceNFT
+ * @dev Issues membership and victory NFTs for Global CodeGuard Alliance.
+ */
+contract AllianceNFT is ERC721URIStorage, Ownable {
+    uint256 public tokenCounter;
+    mapping(address => bool) public hasMembership;
+
+    event NFTMinted(address indexed member, uint256 tokenId, string uri);
+
+    constructor() ERC721("CodeGuard Alliance NFT", "CGA") {
+        tokenCounter = 0;
+    }
+
+    // Mint membership NFT
+    function mintMembership(address _member, string memory _tokenURI) external onlyOwner {
+        require(!hasMembership[_member], "Already minted");
+        tokenCounter++;
+        _safeMint(_member, tokenCounter);
+        _setTokenURI(tokenCounter, _tokenURI);
+        hasMembership[_member] = true;
+        emit NFTMinted(_member, tokenCounter, _tokenURI);
+    }
+
+    // Mint victory NFT (awarded after case win)
+    function mintVictoryNFT(address _member, string memory _tokenURI) external onlyOwner {
+        tokenCounter++;
+        _safeMint(_member, tokenCounter);
+        _setTokenURI(tokenCounter, _tokenURI);
+        emit NFTMinted(_member, tokenCounter, _tokenURI);
+    }
+}
+```
+
+---
+
+## ⚙️ 3. Integration Workflow
+1. **Supabase → Smart Contract:** When a case is marked `Won`, the trigger automatically calls `payVictory()` in `VictoryFund.sol` using an Alliance key.
+2. **MetaFOX Node:** Mints a “Victory NFT” for the winning member via `AllianceNFT.sol`.
+3. **Orbital Bank Escrow:** Logs payout transaction + NFT proof to the transparent ledger.
+4. **n8n Automation:** Posts an update to the ClydeOS dashboard and email digest.
+
+---
+
+## 🔒 4. Security & Compliance
+- Uses **OpenZeppelin** libraries for safe ownership and token logic.
+- Employs **ReentrancyGuard** for fund operations.
+- Optional **multi-sig** integration for Alliance Council approvals.
+- Auditable on-chain record for every payout or NFT mint.
+
+---
+
+## 🧾 5. Future Upgrades
+- DAO Voting for fund disbursement approvals.
+- Cross-chain deployment (Polygon, Base, Arbitrum).
+- Dynamic NFT metadata (updates case status visually).
+- Integration with ClydeOS governance layer for ethical oversight.
+
+---
+
+**Author:** Brandon R. Clyde — Founder & Chief Architect, ClydeOS  ♾️
